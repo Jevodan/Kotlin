@@ -1,11 +1,15 @@
 package com.example.jevodan.union
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import com.example.jevodan.union.ui.adapter.MainAdapter
+import com.example.jevodan.union.ui.main.MainViewState
+import kotlinx.android.synthetic.main.main_fragment.*
 
 
 class MainFragment : Fragment() {
@@ -15,6 +19,7 @@ class MainFragment : Fragment() {
     }
 
     private lateinit var viewModel: MainViewModel
+    private lateinit var adapter: MainAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,7 +31,14 @@ class MainFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-        // TODO: Use the ViewModel
+        adapter = MainAdapter()
+        mainRecycler.adapter = adapter
+
+        viewModel.viewState().observe(this, Observer<MainViewState> {
+            it?.let { adapter.menuBaskets = it.myOrders }
+        })
+
+
     }
 
 }
