@@ -6,6 +6,10 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: "androidx.navigation.safeargs.kotlin"
 
+androidExtensions {
+    experimental = true
+}
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.0"
@@ -45,9 +49,10 @@ dependencies {
     // Navigation Component
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+   // implementation "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
 
     // LiveData & ViewModel
-    implementation "android.arch.lifecycle:extensions:$lifecycle_version"
+  //  implementation "android.arch.lifecycle:extensions:$lifecycle_version"
     // CoordinatorLayout & CardView
     implementation "com.android.support:design:$support_version"
     implementation "com.android.support:cardview-v7:$support_version"
