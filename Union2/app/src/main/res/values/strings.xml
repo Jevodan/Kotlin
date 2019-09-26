@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Union</string>
+    <string name="title_union">Союз покупателей</string>
+    <string name="note_title">Заголовок</string>
+    <string name="note_desc">Манускрипт</string>
+    <string name="hint_write_desc">Напишите текст манускрипта</string>
 </resources>

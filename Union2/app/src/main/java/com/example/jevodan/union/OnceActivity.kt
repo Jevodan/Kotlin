@@ -13,6 +13,7 @@ class OnceActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.one_activity)
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)
+
     }
 
 }
