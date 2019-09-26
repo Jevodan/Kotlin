@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "342266065764",
+    "firebase_url": "https://notes-a0f77.firebaseio.com",
+    "project_id": "notes-a0f77",
+    "storage_bucket": "notes-a0f77.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:342266065764:android:18c225afa6fa6b9f938071",
+        "android_client_info": {
+          "package_name": "com.example.jevodan.union"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "342266065764-e7pjtftjkb96pfmt1t41tt5dflmufku1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNro9xJCMgZcqPPXkeOkRr5tc2_X8kQ4Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "342266065764-e7pjtftjkb96pfmt1t41tt5dflmufku1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

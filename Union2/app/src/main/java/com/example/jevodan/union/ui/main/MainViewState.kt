@@ -1,5 +1,6 @@
 package com.example.jevodan.union.ui.main
 
 import com.example.jevodan.union.data.model.Notes
+import com.example.jevodan.union.ui.base.BaseViewState
 
-data class MainViewState(val myNotes: List<Notes>)
+class MainViewState(val myNotes: List<Notes>? = null, error: Throwable? = null) : BaseViewState<List<Notes>?>(myNotes, error)

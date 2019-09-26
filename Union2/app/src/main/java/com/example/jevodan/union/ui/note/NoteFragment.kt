@@ -1,62 +1,54 @@
 package com.example.jevodan.union.ui.note
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.example.jevodan.union.R
 import com.example.jevodan.union.data.model.Color
 import com.example.jevodan.union.data.model.Notes
+import com.example.jevodan.union.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.note_fragment.*
 import java.util.*
 import androidx.navigation.fragment.navArgs as navArgs1
 
-@Suppress("ImplicitThis")
-class NoteFragment : Fragment() {
+class NoteFragment : BaseFragment<Notes?, NoteViewState>() {
 
-    companion object {
-        fun newInstance() = NoteFragment()
-        private const val DATE_FORMAT = "dd.MM.yy HH:mm"
-    }
+    override val layoutRes: Int = R.layout.note_fragment
 
     private var note: Notes? = null
-    private lateinit var viewModel: NoteViewModel
+    override val viewModel: NoteViewModel by lazy {
+        ViewModelProviders.of(this).get(NoteViewModel::class.java)
+    }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.note_fragment, container, false)
+    override fun onPause() {
+        note =
+            note?.copy(
+                title = titleEditText.text.toString(),
+                desc = descEditText.text.toString(),
+                lastChanged = Date()
+            )
+                ?: Notes(
+                    UUID.randomUUID().toString(),
+                    Color.VIOLET,
+                    titleEditText.text.toString(),
+                    descEditText.text.toString()
+                )
+        note?.let { viewModel.save(note!!) }
+        super.onPause()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(NoteViewModel::class.java)
         val args = arguments?.let { NoteFragmentArgs.fromBundle(it) }
         this.note = args?.note
-
-        if (this.note != null) {
-            titleEditText.setText(this.note!!.title)
-            descEditText.setText(this.note!!.desc)
+        this.note?.let {
+            viewModel.loadNote(it)
+            titleEditText.setText(it!!.title)
+            descEditText.setText(it!!.desc)
         }
     }
 
-    override fun onPause() {
-        note = note?.copy(
-            title = titleEditText.text.toString(),
-            desc = descEditText.text.toString(),
-            lastChanged = Date()
-        ) ?: createNewNote()
-        if (note != null) viewModel.save(note!!)
-        super.onPause()
+    override fun renderData(data: Notes?) {
+        this.note = data
     }
 
-    private fun createNewNote() = Notes(
-        UUID.randomUUID().toString(),
-        Color.VIOLET,
-        titleEditText.text.toString(),
-        descEditText.text.toString()
-    )
 }

@@ -1,53 +1,37 @@
 package com.example.jevodan.union
 
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.example.jevodan.union.data.model.Color
 import com.example.jevodan.union.data.model.Notes
 import com.example.jevodan.union.ui.adapter.NotesAdapter
+import com.example.jevodan.union.ui.base.BaseFragment
 import com.example.jevodan.union.ui.main.MainViewState
 import kotlinx.android.synthetic.main.main_fragment.*
 
 
-class MainFragment : Fragment() {
+class MainFragment : BaseFragment<List<Notes>?, MainViewState>() {
 
-    companion object {
-        fun newInstance() = MainFragment()
+    /**
+     * Делегирование функции lazy создание экземпляра
+     * В этом случае ViewModel создастся только, когда потребуется
+     */
+    override val viewModel: MainViewModel by lazy {
+        ViewModelProviders.of(this).get(MainViewModel::class.java)
     }
-
-    private lateinit var viewModel: MainViewModel
+    override val layoutRes: Int = R.layout.main_fragment
     private lateinit var adapter: NotesAdapter
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.main_fragment, container, false)
-    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-        adapter = NotesAdapter{
-            val action = MainFragmentDirections.createNote(it)
-            view?.let { it1 -> Navigation.findNavController(it1).navigate(action) }
+        adapter = NotesAdapter {
+            viewModel.removeNote(it)
+          //  val action = MainFragmentDirections.createNote(it)
+        //    view?.let { it1 -> Navigation.findNavController(it1).navigate(action) }
         }
-
         mainRecycler.adapter = adapter
-
-        viewModel.viewState().observe(this, Observer<MainViewState> {
-            it?.let { adapter.notes = it.myNotes }
-        })
-        for (i in 10 until 100 step 3) {
-            Log.d("test", "Хеллоу" + i)
-        }
 
         val note = Notes(color = Color.VIOLET)
 
@@ -56,6 +40,10 @@ class MainFragment : Fragment() {
             Navigation.findNavController(it).navigate(action)
         }
 
+    }
+
+    override fun renderData(data: List<Notes>?) {
+        data?.let { adapter.notes = it }
     }
 
 }

@@ -53,8 +53,7 @@ class NotesAdapter(val onItemClick: ((Notes) -> Unit)? = null) : RecyclerView.Ad
             itemView.setOnClickListener {
                 onItemClick?.invoke(notes)
             }
-            //    var notesNew = Notes("0",Color.WHITE)
-            //    titleTextView.text = this.concatt(notesNew).title
+
         }
 
     }
