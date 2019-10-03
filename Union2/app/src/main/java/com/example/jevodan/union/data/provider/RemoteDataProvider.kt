@@ -1,6 +1,7 @@
 package com.example.jevodan.union.data.provider
 
 import androidx.lifecycle.LiveData
+import com.example.jevodan.union.data.entity.User
 import com.example.jevodan.union.data.model.Notes
 import com.example.jevodan.union.data.model.NoteResult
 
@@ -25,5 +26,7 @@ interface RemoteDataProvider {
      * удаление конкретной записи
      */
     fun removeNoteById(id: String): LiveData<NoteResult>
+
+    fun getCurrentUser() : LiveData<User?>
 
 }
