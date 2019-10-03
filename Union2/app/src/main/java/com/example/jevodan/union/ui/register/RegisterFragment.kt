@@ -1,6 +1,8 @@
 package com.example.jevodan.union.ui.register
 
 import android.os.Bundle
+import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,32 +12,45 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.example.jevodan.union.R
+import com.example.jevodan.union.ui.base.BaseFragment
+import com.example.jevodan.union.ui.base.BaseViewModel
+import kotlinx.android.synthetic.main.one_activity.*
 import kotlinx.android.synthetic.main.register_fragment.*
 
-class RegisterFragment : Fragment() {
+class RegisterFragment : BaseFragment<Boolean?, RegisterViewState>() {
 
-    companion object {
-        fun newInstance() = RegisterFragment()
+
+    override val viewModel: RegisterViewModel by lazy {
+        ViewModelProviders.of(this).get(RegisterViewModel::class.java)
     }
 
-    private lateinit var viewModel: RegisterViewModel
+    override val layoutRes: Int? = null
+
+    override fun onResume() {
+        super.onResume()
+        Handler().postDelayed(
+            {
+                viewModel.requestUser()
+            }, 1000L
+
+        )
+    }
+
+    override fun renderData(data: Boolean?) {
+        data?.takeIf { it }?.let {
+            view?.let { it1 ->
+                Navigation.findNavController(it1)
+                    .navigate(RegisterFragmentDirections.successAutorization())
+            } ?: let{ Log.d("фейл", "фейл")}
+        }
+    }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         return inflater.inflate(R.layout.register_fragment, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(RegisterViewModel::class.java)
-        viewModel.viewState().observe(this, Observer {
-            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-        })
-           button_reg.setOnClickListener { viewModel.regClick()  }
-           button_enter.setOnClickListener {
-               Navigation.findNavController(it).navigate(RegisterFragmentDirections.successAutorization()) }
     }
 
 }

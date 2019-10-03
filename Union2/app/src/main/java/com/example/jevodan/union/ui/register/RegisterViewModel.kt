@@ -1,21 +1,20 @@
 package com.example.jevodan.union.ui.register
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 
-class RegisterViewModel : ViewModel() {
+import com.example.jevodan.union.data.Repository
+import com.example.jevodan.union.data.errors.NoAuthException
+import com.example.jevodan.union.ui.base.BaseViewModel
 
-    private val viewStateLiveData = MutableLiveData<String>()
-    private var check = true;
+class RegisterViewModel : BaseViewModel<Boolean?, RegisterViewState>() {
 
-    init {
-        viewStateLiveData.value = "Hello World!"
+    fun requestUser() {
+        Repository.getCurrentUser().observeForever {
+            viewStateLiveData.value = it?.let {
+                RegisterViewState(authenticated = true)
+            } ?: let {
+                RegisterViewState(error = NoAuthException())
+            }
+        }
     }
 
-    fun viewState(): LiveData<String> = viewStateLiveData
-    fun regClick() {
-        check = !check
-        viewStateLiveData.value = "Пока регистрация невозможна"
-    }
 }
